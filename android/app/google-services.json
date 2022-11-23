@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "124447812672",
+    "project_id": "collegehood-io",
+    "storage_bucket": "collegehood-io.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124447812672:android:1a2d8fde0a53b87b4803a5",
+        "android_client_info": {
+          "package_name": "com.example.collegehood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124447812672-o2r1644h81odtns1jc9b46jt3jn04oje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASEP_awNWNMROstlcE-cxpf7l7gPJVE9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124447812672-o2r1644h81odtns1jc9b46jt3jn04oje.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "124447812672-fso7535pg4mo8dmbhm385om06550vs2a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.collegehood"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
