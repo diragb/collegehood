@@ -125,8 +125,7 @@ class _ViewEventState extends State<ViewEvent> {
                                                     const EdgeInsets.symmetric(
                                                         vertical: 15.0,
                                                         horizontal: 15.0),
-                                                child: Expanded(
-                                                    child: Column(children: [
+                                                child: Column(children: [
                                                   Text(
                                                     description,
                                                     style:
@@ -144,7 +143,7 @@ class _ViewEventState extends State<ViewEvent> {
                                                     softWrap: true,
                                                   ),
                                                   const SizedBox(height: 30),
-                                                ]))),
+                                                ])),
                                           ))
                                     ])))
                           ]),
