@@ -42,6 +42,8 @@ class _RebuyAddItemState extends State<RebuyAddItem> {
         setState(() {
           username = user.displayName ?? '';
         });
+      } else {
+        Navigator.pushNamed(context, PublicRoutes.login);
       }
     });
   }

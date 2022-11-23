@@ -57,6 +57,8 @@ class _ProfileState extends State<Profile> {
             username = user.displayName ?? '';
           });
           loadProfile();
+        } else {
+          Navigator.pushNamed(context, PublicRoutes.login);
         }
       });
     });
@@ -81,7 +83,8 @@ class _ProfileState extends State<Profile> {
       buttonPressed = false;
     });
     signOutUser();
-    Navigator.pushNamed(context, PublicRoutes.landing);
+    Navigator.pushNamedAndRemoveUntil(
+        context, PublicRoutes.landing, (route) => false);
   }
 
   @override

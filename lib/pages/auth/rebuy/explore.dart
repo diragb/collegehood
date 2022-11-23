@@ -204,6 +204,7 @@ class _RebuyExploreState extends State<RebuyExplore> {
   String filterKey = '';
   Iterable<Map<String, dynamic>> itemDetails = [];
   Iterable<InkWell> items = [];
+  bool areItemsFetched = false;
 
   void setFilterKey(String key) {
     setState(() {
@@ -221,6 +222,8 @@ class _RebuyExploreState extends State<RebuyExplore> {
             username = user.displayName ?? '';
           });
           loadItems();
+        } else {
+          Navigator.pushNamed(context, PublicRoutes.login);
         }
       });
     });
@@ -316,6 +319,7 @@ class _RebuyExploreState extends State<RebuyExplore> {
     }
 
     setState(() {
+      areItemsFetched = true;
       itemDetails = finalItems;
       items = finalItems.map((fetchedItem) => cardItem(
           context: context,
@@ -330,6 +334,30 @@ class _RebuyExploreState extends State<RebuyExplore> {
           userProfilePicture: fetchedItem['userProfilePicture'] ?? '',
           username: fetchedItem['username'] ?? ''));
     });
+  }
+
+  conditionalItems(bool isFetched) {
+    if (isFetched) {
+      return items.map((item) => Column(
+            children: [item, const SizedBox(height: 20)],
+          ));
+    } else {
+      return [
+        Column(
+          children: [
+            const SizedBox(height: 20),
+            Text('Loading...',
+                style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ))),
+            const SizedBox(height: 20)
+          ],
+        )
+      ];
+    }
   }
 
   @override
@@ -404,14 +432,7 @@ class _RebuyExploreState extends State<RebuyExplore> {
                             const SizedBox(
                               height: 10,
                             ),
-                            ...[
-                              ...items.map((item) => Column(
-                                    children: [
-                                      item,
-                                      const SizedBox(height: 20)
-                                    ],
-                                  ))
-                            ],
+                            ...conditionalItems(areItemsFetched),
                           ],
                         ))))));
   }

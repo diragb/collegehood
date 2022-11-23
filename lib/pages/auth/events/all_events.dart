@@ -83,6 +83,7 @@ class _AllEventsState extends State<AllEvents> {
   String username = '';
   Iterable<Map<String, dynamic>> eventDetails = [];
   Iterable<InkWell> events = [];
+  bool areEventsFetched = false;
 
   @override
   void initState() {
@@ -113,6 +114,7 @@ class _AllEventsState extends State<AllEvents> {
     }
 
     setState(() {
+      areEventsFetched = true;
       eventDetails = finalEvents;
       events = finalEvents.map((event) => cardItem(
           context: context,
@@ -121,6 +123,30 @@ class _AllEventsState extends State<AllEvents> {
           picture: event['picture'] ?? '',
           title: event['title'] ?? ''));
     });
+  }
+
+  conditionalEvents(bool isFetched) {
+    if (isFetched) {
+      return events.map((item) => Column(
+            children: [item, const SizedBox(height: 20)],
+          ));
+    } else {
+      return [
+        Column(
+          children: [
+            const SizedBox(height: 20),
+            Text('Loading...',
+                style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ))),
+            const SizedBox(height: 20)
+          ],
+        )
+      ];
+    }
   }
 
   @override
@@ -154,14 +180,7 @@ class _AllEventsState extends State<AllEvents> {
                             const SizedBox(
                               height: 10,
                             ),
-                            ...[
-                              ...events.map((item) => Column(
-                                    children: [
-                                      item,
-                                      const SizedBox(height: 20)
-                                    ],
-                                  ))
-                            ],
+                            ...conditionalEvents(areEventsFetched),
                           ],
                         ))))));
   }

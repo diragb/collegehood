@@ -100,6 +100,8 @@ class _RebuyChatsState extends State<RebuyChats> {
             username = user.displayName ?? '';
           });
           loadChats();
+        } else {
+          Navigator.pushNamed(context, PublicRoutes.login);
         }
       });
     });

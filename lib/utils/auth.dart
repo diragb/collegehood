@@ -3,17 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Functions:
-Future<bool> login({required String email, required String password}) async {
+Future<Map> login({required String email, required String password}) async {
   try {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
   } catch (e) {
-    return false;
+    return {'status': false, 'payload': e};
   }
-  return true;
+  return {'status': true, 'payload': null};
 }
 
-Future<bool> signup(
+Future<Map> signup(
     {required String username,
     required String email,
     required String password}) async {
@@ -34,9 +34,9 @@ Future<bool> signup(
       'talksTo': {}
     });
   } catch (e) {
-    return false;
+    return {'status': false, 'payload': e};
   }
-  return true;
+  return {'status': true, 'payload': null};
 }
 
 Future<bool> signOutUser() async {

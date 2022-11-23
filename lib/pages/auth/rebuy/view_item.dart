@@ -29,7 +29,8 @@ class _RebuyViewItemState extends State<RebuyViewItem> {
       itemDescription = '',
       sellerPhone = '';
   bool isSold = false;
-  String userProfilePicture = '', selleerUsername = '', userDetails = '';
+  String userProfilePicture = '', sellerUsername = '', userDetails = '';
+  bool isItemLoaded = false;
 
   @override
   void initState() {
@@ -43,6 +44,8 @@ class _RebuyViewItemState extends State<RebuyViewItem> {
           final routeData =
               ModalRoute.of(context)?.settings.arguments as Map<String, String>;
           loadItem(routeData['itemID'] ?? '');
+        } else {
+          Navigator.pushNamed(context, PublicRoutes.login);
         }
       });
     });
@@ -69,13 +72,14 @@ class _RebuyViewItemState extends State<RebuyViewItem> {
 
     Map<String, dynamic> user = await getUserDetails(item['username']);
     setState(() {
+      isItemLoaded = true;
       itemID = itemID_;
       photoURL = _photoURL;
       itemName = item['itemName'] ?? '';
       itemDetail = item['itemDetail'] ?? '';
       itemPrice = item['itemPrice'] ?? '';
       itemDescription = item['itemDescription'] ?? '';
-      selleerUsername = item['username'] ?? '';
+      sellerUsername = item['username'] ?? '';
       isSold = item['isSold'] ?? false;
       userProfilePicture = user['userProfilePicture'] ?? '';
       userDetails = user['userDetails'] ?? '';
@@ -107,186 +111,203 @@ class _RebuyViewItemState extends State<RebuyViewItem> {
                 const SizedBox(
                   height: 50,
                 ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Column(children: [
-                        SizedBox(
-                          height: 60,
-                          child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
+                (isItemLoaded
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(children: [
+                            SizedBox(
+                              height: 60,
+                              child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 10.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      userProfilePicture),
-                                                  fit: BoxFit.cover),
-                                              borderRadius:
-                                                  BorderRadius.circular(40))),
-                                      const SizedBox(
-                                        width: 7.5,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      Row(
                                         children: [
-                                          Text(selleerUsername,
-                                              style: GoogleFonts.montserrat(
-                                                  textStyle: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w600,
-                                              ))),
-                                          Text(userDetails,
-                                              style: GoogleFonts.montserrat(
-                                                  textStyle: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey[700],
-                                                fontWeight: FontWeight.w500,
-                                              )))
+                                          Container(
+                                              width: 40,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          userProfilePicture),
+                                                      fit: BoxFit.cover),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          40))),
+                                          const SizedBox(
+                                            width: 7.5,
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(sellerUsername,
+                                                  style: GoogleFonts.montserrat(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w600,
+                                                  ))),
+                                              Text(userDetails,
+                                                  style: GoogleFonts.montserrat(
+                                                      textStyle: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.grey[700],
+                                                    fontWeight: FontWeight.w500,
+                                                  )))
+                                            ],
+                                          )
                                         ],
+                                      ),
+                                      Icon(
+                                        Icons.more_vert,
+                                        color: Colors.grey[700],
+                                        size: 20.0,
+                                        semanticLabel: 'More',
                                       )
                                     ],
-                                  ),
-                                  Icon(
-                                    Icons.more_vert,
-                                    color: Colors.grey[700],
-                                    size: 20.0,
-                                    semanticLabel: 'More',
-                                  )
-                                ],
-                              )),
-                        ),
-                        Container(
-                          height: 220,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(photoURL),
-                                  fit: BoxFit.cover)),
-                        ),
-                        SizedBox(
-                            child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 10.0),
-                                child: Column(children: [
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                            child: Column(
+                                  )),
+                            ),
+                            Container(
+                              height: 220,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(photoURL),
+                                      fit: BoxFit.cover)),
+                            ),
+                            SizedBox(
+                                child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 10.0),
+                                    child: Column(children: [
+                                      Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                              MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              itemName,
-                                              style: GoogleFonts.montserrat(
-                                                  textStyle: const TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w700,
-                                              )),
-                                              overflow: TextOverflow.fade,
-                                              maxLines: 1,
-                                              softWrap: false,
-                                            ),
-                                            Text(
-                                              itemDetail,
-                                              style: GoogleFonts.montserrat(
-                                                  textStyle: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.grey[700],
-                                                fontWeight: FontWeight.w500,
-                                              )),
-                                              overflow: TextOverflow.fade,
-                                              maxLines: 1,
-                                              softWrap: false,
-                                            )
-                                          ],
-                                        )),
-                                        Text('₹$itemPrice',
-                                            style: GoogleFonts.montserrat(
-                                                textStyle: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey[900],
-                                              fontWeight: FontWeight.w500,
-                                            )))
-                                      ]),
-                                  const SizedBox(height: 10),
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5.0, horizontal: 5.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.blueGrey[50],
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 15.0,
-                                                horizontal: 15.0),
-                                            child: Expanded(
-                                                child: Column(children: [
-                                              Text(
-                                                itemDescription,
+                                            Expanded(
+                                                child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  itemName,
+                                                  style: GoogleFonts.montserrat(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                                  overflow: TextOverflow.fade,
+                                                  maxLines: 1,
+                                                  softWrap: false,
+                                                ),
+                                                Text(
+                                                  itemDetail,
+                                                  style: GoogleFonts.montserrat(
+                                                      textStyle: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey[700],
+                                                    fontWeight: FontWeight.w500,
+                                                  )),
+                                                  overflow: TextOverflow.fade,
+                                                  maxLines: 1,
+                                                  softWrap: false,
+                                                )
+                                              ],
+                                            )),
+                                            Text('₹$itemPrice',
                                                 style: GoogleFonts.montserrat(
-                                                    textStyle: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.normal,
-                                                )),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 5,
-                                                softWrap: true,
-                                              ),
-                                              const SizedBox(height: 30),
-                                              button('Contact Seller',
-                                                  buttonPressed: buttonPressed,
-                                                  onTap: () async {
-                                                setState(() {
-                                                  buttonPressed = true;
-                                                });
-                                                await Future.delayed(
-                                                    const Duration(
-                                                        milliseconds: 500));
-                                                setState(() {
-                                                  buttonPressed = false;
-                                                });
-                                                Navigator.pushNamed(
-                                                    context,
-                                                    AuthRoutes
-                                                        .rebuyConversation,
-                                                    arguments: {
-                                                      'username':
-                                                          selleerUsername
+                                                    textStyle: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.grey[900],
+                                                  fontWeight: FontWeight.w500,
+                                                )))
+                                          ]),
+                                      const SizedBox(height: 10),
+                                      Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5.0, horizontal: 5.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.blueGrey[50],
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 15.0,
+                                                        horizontal: 15.0),
+                                                child: Column(children: [
+                                                  Text(
+                                                    itemDescription,
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            textStyle:
+                                                                const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    )),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 5,
+                                                    softWrap: true,
+                                                  ),
+                                                  const SizedBox(height: 30),
+                                                  button('Contact Seller',
+                                                      buttonPressed:
+                                                          buttonPressed,
+                                                      onTap: () async {
+                                                    setState(() {
+                                                      buttonPressed = true;
                                                     });
-                                              })
-                                            ]))),
-                                      ))
-                                ])))
-                      ]),
-                    ))
+                                                    await Future.delayed(
+                                                        const Duration(
+                                                            milliseconds: 500));
+                                                    setState(() {
+                                                      buttonPressed = false;
+                                                    });
+                                                    Navigator.pushNamed(
+                                                        context,
+                                                        AuthRoutes
+                                                            .rebuyConversation,
+                                                        arguments: {
+                                                          'username':
+                                                              sellerUsername
+                                                        });
+                                                  })
+                                                ])),
+                                          ))
+                                    ])))
+                          ]),
+                        ))
+                    : Text('Loading...',
+                        style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        )))),
               ]),
             )));
   }

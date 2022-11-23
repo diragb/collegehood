@@ -58,16 +58,19 @@ class _SignupState extends State<Signup> {
 
   void handleSignup() async {
     if (!validation()) return;
-    bool isSignupSuccessful =
+    Map isSignupSuccessful =
         await signup(username: username, email: email, password: password);
-    if (isSignupSuccessful) {
+    if (isSignupSuccessful['status']) {
       setState(() {
         errorMessage = '';
       });
       Navigator.pushNamed(context, AuthRoutes.landing);
     } else {
+      var errorMessage_ =
+          (isSignupSuccessful['payload'] as FirebaseAuthException).message ??
+              'Unable to sign up';
       setState(() {
-        errorMessage = 'Unable to sign up';
+        errorMessage = errorMessage_;
       });
     }
   }

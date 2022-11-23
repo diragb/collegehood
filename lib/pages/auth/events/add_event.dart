@@ -38,6 +38,8 @@ class _EventsAddEventState extends State<EventsAddEvent> {
         setState(() {
           username = user.displayName ?? '';
         });
+      } else {
+        Navigator.pushNamed(context, PublicRoutes.login);
       }
     });
   }

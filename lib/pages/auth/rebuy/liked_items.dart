@@ -3,9 +3,11 @@ import 'package:collegehood/components/rebuy_item.dart';
 import 'package:collegehood/components/text.dart';
 import 'package:collegehood/components/topbar.dart';
 import 'package:collegehood/utils/database.dart';
+import 'package:collegehood/utils/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RebuyLikedItems extends StatefulWidget {
   const RebuyLikedItems({super.key});
@@ -17,6 +19,8 @@ class RebuyLikedItems extends StatefulWidget {
 class _RebuyLikedItemsState extends State<RebuyLikedItems> {
   String username = '';
   Iterable<InkWell> items = [];
+  bool areItemsLoaded = false;
+  bool noItems = false;
 
   @override
   void initState() {
@@ -28,6 +32,8 @@ class _RebuyLikedItemsState extends State<RebuyLikedItems> {
             username = user.displayName ?? '';
           });
           loadItems();
+        } else {
+          Navigator.pushNamed(context, PublicRoutes.login);
         }
       });
     });
@@ -84,8 +90,50 @@ class _RebuyLikedItemsState extends State<RebuyLikedItems> {
     }
 
     setState(() {
+      areItemsLoaded = true;
+      noItems = finalItems.isEmpty;
       items = finalItems;
     });
+  }
+
+  conditionalItems(bool isFetched, bool isEmpty) {
+    if (isFetched) {
+      if (isEmpty) {
+        return Column(
+          children: [
+            const SizedBox(height: 20),
+            Text('No items to show',
+                style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ))),
+            const SizedBox(height: 20)
+          ],
+        );
+      } else {
+        return items.map((item) => Column(
+              children: [item, const SizedBox(height: 20)],
+            ));
+      }
+    } else {
+      return [
+        Column(
+          children: [
+            const SizedBox(height: 20),
+            Text('Loading...',
+                style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ))),
+            const SizedBox(height: 20)
+          ],
+        )
+      ];
+    }
   }
 
   @override
@@ -115,11 +163,7 @@ class _RebuyLikedItemsState extends State<RebuyLikedItems> {
                           const SizedBox(
                             height: 15,
                           ),
-                          ...[
-                            ...items.map((item) => Column(
-                                  children: [item, const SizedBox(height: 20)],
-                                ))
-                          ],
+                          conditionalItems(areItemsLoaded, noItems)
                         ]))))));
   }
 }

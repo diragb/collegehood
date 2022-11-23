@@ -18,6 +18,7 @@ class _ViewEventState extends State<ViewEvent> {
   bool buttonPressed = false;
   String eventID = '';
   String picture = '', title = '', description = '';
+  bool isEventLoaded = false;
 
   @override
   void initState() {
@@ -46,6 +47,7 @@ class _ViewEventState extends State<ViewEvent> {
     }
 
     setState(() {
+      isEventLoaded = true;
       eventID = eventID_;
       picture = _picture;
       title = event['title'];
@@ -69,78 +71,91 @@ class _ViewEventState extends State<ViewEvent> {
                 const SizedBox(
                   height: 50,
                 ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Column(children: [
-                        SizedBox(
-                          height: 60,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0),
-                            child: Text(
-                              title,
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                              )),
-                              overflow: TextOverflow.fade,
-                              maxLines: 1,
-                              softWrap: false,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 220,
-                          width: double.infinity,
+                (isEventLoaded
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 10.0),
+                        child: Container(
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(picture),
-                                  fit: BoxFit.cover)),
-                        ),
-                        SizedBox(
-                            child: Padding(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(children: [
+                            SizedBox(
+                              height: 60,
+                              child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 10.0),
-                                child: Column(children: [
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5.0, horizontal: 5.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.blueGrey[50],
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 15.0,
-                                                horizontal: 15.0),
-                                            child: Expanded(
-                                                child: Column(children: [
-                                              Text(
-                                                description,
-                                                style: GoogleFonts.montserrat(
-                                                    textStyle: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.normal,
-                                                )),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 5,
-                                                softWrap: true,
-                                              ),
-                                              const SizedBox(height: 30),
-                                            ]))),
-                                      ))
-                                ])))
-                      ]),
-                    ))
+                                child: Text(
+                                  title,
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                  )),
+                                  overflow: TextOverflow.fade,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 220,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(picture),
+                                      fit: BoxFit.cover)),
+                            ),
+                            SizedBox(
+                                child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 10.0),
+                                    child: Column(children: [
+                                      Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5.0, horizontal: 5.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.blueGrey[50],
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 15.0,
+                                                        horizontal: 15.0),
+                                                child: Expanded(
+                                                    child: Column(children: [
+                                                  Text(
+                                                    description,
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            textStyle:
+                                                                const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    )),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 5,
+                                                    softWrap: true,
+                                                  ),
+                                                  const SizedBox(height: 30),
+                                                ]))),
+                                          ))
+                                    ])))
+                          ]),
+                        ))
+                    : Text('Loading...',
+                        style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        )))),
               ]),
             )));
   }

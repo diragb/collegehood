@@ -2,6 +2,7 @@
 import 'package:collegehood/components/input.dart';
 import 'package:collegehood/components/topbar.dart';
 import 'package:collegehood/utils/database.dart';
+import 'package:collegehood/utils/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,6 +49,8 @@ class _EditProfileState extends State<EditProfile> {
             username = user.displayName ?? '';
           });
           loadProfile();
+        } else {
+          Navigator.pushNamed(context, PublicRoutes.login);
         }
       });
     });
