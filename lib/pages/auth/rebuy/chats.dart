@@ -89,6 +89,8 @@ class _RebuyChatsState extends State<RebuyChats> {
   String username = '';
   Iterable<Map<String, dynamic>> chatsDetails = [];
   Iterable<InkWell> chats = [];
+  bool areChatsLoaded = false;
+  bool noChats = false;
 
   @override
   void initState() {
@@ -128,6 +130,8 @@ class _RebuyChatsState extends State<RebuyChats> {
     }
 
     setState(() {
+      areChatsLoaded = true;
+      noChats = finalChats.isEmpty;
       chatsDetails = finalChats;
       chats = finalChats.map((chat) => messageItem(
           context: context,
@@ -139,6 +143,48 @@ class _RebuyChatsState extends State<RebuyChats> {
           timestamp:
               chat['timestamp'] ?? DateTime.now().millisecondsSinceEpoch));
     });
+  }
+
+  Iterable<dynamic> conditionalChats(bool isFetched, bool isEmpty) {
+    if (isFetched) {
+      if (isEmpty) {
+        return [
+          Column(
+            children: [
+              const SizedBox(height: 20),
+              Text('No chats to show',
+                  style: GoogleFonts.montserrat(
+                      textStyle: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ))),
+              const SizedBox(height: 20)
+            ],
+          )
+        ];
+      } else {
+        return chats.map((item) => Column(
+              children: [item, const SizedBox(height: 20)],
+            ));
+      }
+    } else {
+      return [
+        Column(
+          children: [
+            const SizedBox(height: 20),
+            Text('Loading...',
+                style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ))),
+            const SizedBox(height: 20)
+          ],
+        )
+      ];
+    }
   }
 
   @override
@@ -172,14 +218,7 @@ class _RebuyChatsState extends State<RebuyChats> {
                             const SizedBox(
                               height: 10,
                             ),
-                            ...[
-                              ...chats.map((item) => Column(
-                                    children: [
-                                      item,
-                                      const SizedBox(height: 20)
-                                    ],
-                                  ))
-                            ],
+                            ...conditionalChats(areChatsLoaded, noChats),
                           ],
                         ))))));
   }
