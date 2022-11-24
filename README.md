@@ -33,16 +33,16 @@ forms were working fine ✅
 
 17. Signup issue ✅
 
-18. Keyboard covering up typing space
+18. Keyboard covering up typing space ✅
 
-19. MyListings is logging out user
+19. MyListings is logging out user ✅
 
 20. In Chat:
     1. Extra messages and some messages are duplicated
-    2. Keyboard issue
+    2. Keyboard issue ✅
     3. Messages are not in order
 
-21. On back button on RebuyExplore it should go back to AuthLanding
+21. On back button on RebuyExplore it should go back to AuthLanding ✅
 
 22. User shouldn't be able to contact themselves
 
