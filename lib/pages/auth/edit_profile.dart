@@ -1,11 +1,16 @@
 // Packages:
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collegehood/components/input.dart';
 import 'package:collegehood/components/topbar.dart';
 import 'package:collegehood/utils/database.dart';
 import 'package:collegehood/utils/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 // Widgets:
 var label = (String data) => Text(data,
@@ -33,11 +38,13 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   bool buttonPressed = false;
+  ImagePicker? imagePicker;
   String username = '',
       email = '',
       phone = '',
       userDetails = '',
       userProfilePicture = '';
+  var uploadedPicture;
 
   @override
   void initState() {
@@ -84,6 +91,28 @@ class _EditProfileState extends State<EditProfile> {
     Navigator.pop(context);
   }
 
+  updateProfilePicture() async {
+    try {
+      String itemPictureID = UniqueKey().toString();
+      if (uploadedPicture == null) return;
+      await FirebaseStorage.instance
+          .ref()
+          .child(itemPictureID)
+          .putFile(uploadedPicture);
+      String newUserProfilePicture = await FirebaseStorage.instance
+          .ref()
+          .child(itemPictureID)
+          .getDownloadURL();
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(username)
+          .update({'userProfilePicture': newUserProfilePicture});
+      setState(() {
+        userProfilePicture = newUserProfilePicture;
+      });
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -101,14 +130,27 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(
                   height: 40,
                 ),
-                Container(
-                    width: 175,
-                    height: 175,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(userProfilePicture),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.circular(82.5))),
+                InkWell(
+                    onTap: () async {
+                      XFile? image = await imagePicker!.pickImage(
+                          source: ImageSource.gallery,
+                          imageQuality: 50,
+                          preferredCameraDevice: CameraDevice.rear);
+                      if (image != null) {
+                        setState(() {
+                          uploadedPicture = File(image.path);
+                        });
+                        updateProfilePicture();
+                      } else {}
+                    },
+                    child: Container(
+                        width: 175,
+                        height: 175,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(userProfilePicture),
+                                fit: BoxFit.cover),
+                            borderRadius: BorderRadius.circular(82.5)))),
                 const SizedBox(
                   height: 15,
                 ),

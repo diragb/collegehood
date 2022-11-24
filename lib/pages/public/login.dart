@@ -5,7 +5,6 @@ import 'package:collegehood/utils/auth.dart';
 import 'package:collegehood/utils/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 // Widgets:
 class Login extends StatefulWidget {
@@ -34,25 +33,6 @@ class _LoginState extends State<Login> {
         }
       });
     });
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.none) {
-        setState(() {
-          disconnected = true;
-        });
-      } else {
-        setState(() {
-          disconnected = false;
-        });
-      }
-    });
-  }
-
-  @override
-  dispose() {
-    super.dispose();
-    subscription.cancel();
   }
 
   bool validation() {
