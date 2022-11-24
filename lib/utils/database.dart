@@ -345,13 +345,11 @@ sendMessage(String from, String to, String message) async {
     'name': from,
     'timestamp': Timestamp.now().millisecondsSinceEpoch.toString()
   });
-  await FirebaseDatabase.instance
-      .ref()
-      .child('conversations/$chatID')
-      .push()
-      .set({
-    'message': message,
-    'name': from,
+  await FirebaseDatabase.instance.ref().child('chats/$chatID').set({
+    'lastMessage': message,
+    'p1': from,
+    'p2': to,
+    'sentBy': from,
     'timestamp': Timestamp.now().millisecondsSinceEpoch.toString()
   });
 }
@@ -366,13 +364,10 @@ sendMessageCID(String from, String chatID, String message) async {
     'name': from,
     'timestamp': Timestamp.now().millisecondsSinceEpoch.toString()
   });
-  await FirebaseDatabase.instance
-      .ref()
-      .child('conversations/$chatID')
-      .push()
-      .set({
-    'message': message,
-    'name': from,
+  await FirebaseDatabase.instance.ref().child('chats/$chatID').update({
+    'lastMessage': message,
+    'p1': from,
+    'sentBy': from,
     'timestamp': Timestamp.now().millisecondsSinceEpoch.toString()
   });
 }

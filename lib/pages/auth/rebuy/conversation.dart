@@ -76,6 +76,9 @@ class _RebuyConversationState extends State<RebuyConversation> {
   handleLoadConvoFromUsername(String username2) async {
     var fetchedMessages =
         await loadConversationFromUsername(username, username2);
+    fetchedMessages.sort((a, b) =>
+        a['timestamp'].toString().compareTo(b['timestamp'].toString()));
+    print(fetchedMessages.length);
     Map<String, dynamic> user = await getUserDetails(username2);
     setState(() {
       to = username2;
