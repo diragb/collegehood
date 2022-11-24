@@ -181,10 +181,20 @@ getUsersItems(String username) async {
             .limit(50)
             .get())
         .docs;
-    return docs.map((doc) => doc.data());
+    var items = docs.map((doc) => doc.data()).toList();
+    return items;
   } catch (e) {
     return [];
   }
+}
+
+deleteItem({required String itemID, required String username}) async {
+  try {
+    await FirebaseFirestore.instance.collection('items').doc(itemID).delete();
+    await FirebaseFirestore.instance.collection('users').doc(username).update({
+      'items': FieldValue.arrayRemove([itemID])
+    });
+  } catch (e) {}
 }
 
 // Events:

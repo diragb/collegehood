@@ -18,7 +18,7 @@ class RebuyMyListings extends StatefulWidget {
 
 class _RebuyMyListingsState extends State<RebuyMyListings> {
   String username = '';
-  Iterable<InkWell> items = [];
+  Iterable<Map<String, dynamic>> items = [];
   bool areItemsLoaded = false;
   bool noItems = false;
 
@@ -40,29 +40,8 @@ class _RebuyMyListingsState extends State<RebuyMyListings> {
   }
 
   loadItems() async {
-    // List<Map<String, dynamic>> fetchedItems = [
-    //   {
-    //     'itemID': '',
-    //     'isOwn': false,
-    //     'isSold': false,
-    //     'itemDetails': 'From Lenskart | Year 2020',
-    //     'itemName': 'Transparent Frames',
-    //     'itemPicture': 'assets/images/publiclandingbackground.jpeg',
-    //     'itemPrice': '150'
-    //   },
-    //   {
-    //     'itemID': '',
-    //     'isOwn': false,
-    //     'isSold': true,
-    //     'itemDetails': 'From Lenskart | Year 2020',
-    //     'itemName': 'Transparent Frames',
-    //     'itemPicture': 'assets/images/publiclandingbackground.jpeg',
-    //     'itemPrice': '150'
-    //   },
-    // ];
-
     List<Map<String, dynamic>> fetchedItems = await getUsersItems(username);
-    List<InkWell> finalItems = [];
+    List<Map<String, dynamic>> finalItems = [];
     for (var fetchedItem in fetchedItems) {
       bool isOwn = username == fetchedItem['username'];
       String photoURL =
@@ -78,15 +57,18 @@ class _RebuyMyListingsState extends State<RebuyMyListings> {
           photoURL = fetchedItem['photoURL'];
         }
       }
-      finalItems.add(rebuyItem(
-          context: context,
-          isOwn: isOwn,
-          isSold: fetchedItem['isSold'] ?? false,
-          itemDetails: fetchedItem['itemDetail'] ?? '',
-          itemID: fetchedItem['itemID'] ?? '',
-          itemName: fetchedItem['itemName'] ?? '',
-          itemPicture: photoURL,
-          itemPrice: fetchedItem['itemPrice'] ?? ''));
+      finalItems.add({
+        'inkwell': rebuyItem(
+            context: context,
+            isOwn: isOwn,
+            isSold: fetchedItem['isSold'] ?? false,
+            itemDetails: fetchedItem['itemDetail'] ?? '',
+            itemID: fetchedItem['itemID'] ?? '',
+            itemName: fetchedItem['itemName'] ?? '',
+            itemPicture: photoURL,
+            itemPrice: fetchedItem['itemPrice'] ?? ''),
+        'itemID': fetchedItem['itemID']
+      });
     }
 
     setState(() {
@@ -116,7 +98,32 @@ class _RebuyMyListingsState extends State<RebuyMyListings> {
         ];
       } else {
         return items.map((item) => Column(
-              children: [item, const SizedBox(height: 20)],
+              children: [
+                item['inkwell'],
+                const SizedBox(height: 10),
+                InkWell(
+                    onTap: () {
+                      deleteItem(itemID: item['itemID'], username: username);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          child: Text('Delete',
+                              style: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              )))),
+                    )),
+                const SizedBox(height: 20)
+              ],
             ));
       }
     } else {
