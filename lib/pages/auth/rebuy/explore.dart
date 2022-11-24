@@ -295,6 +295,8 @@ class _RebuyExploreState extends State<RebuyExplore> {
 
     var fetchedItems = await loadRebuyItems();
     List<Map<String, dynamic>> finalItems = [];
+    fetchedItems =
+        fetchedItems.where((element) => element['username'] != username);
     for (var fetchedItem in fetchedItems) {
       var userDetails = await getUserDetails(fetchedItem['username']);
       String photoURL =

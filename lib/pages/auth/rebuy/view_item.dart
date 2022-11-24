@@ -274,28 +274,34 @@ class _RebuyViewItemState extends State<RebuyViewItem> {
                                                     softWrap: true,
                                                   ),
                                                   const SizedBox(height: 30),
-                                                  button('Contact Seller',
-                                                      buttonPressed:
-                                                          buttonPressed,
-                                                      onTap: () async {
-                                                    setState(() {
-                                                      buttonPressed = true;
-                                                    });
-                                                    await Future.delayed(
-                                                        const Duration(
-                                                            milliseconds: 500));
-                                                    setState(() {
-                                                      buttonPressed = false;
-                                                    });
-                                                    Navigator.pushNamed(
-                                                        context,
-                                                        AuthRoutes
-                                                            .rebuyConversation,
-                                                        arguments: {
-                                                          'username':
-                                                              sellerUsername
-                                                        });
-                                                  })
+                                                  (sellerUsername == username
+                                                      ? const SizedBox(
+                                                          height: 1)
+                                                      : button('Contact Seller',
+                                                          buttonPressed:
+                                                              buttonPressed,
+                                                          onTap: () async {
+                                                          setState(() {
+                                                            buttonPressed =
+                                                                true;
+                                                          });
+                                                          await Future.delayed(
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      500));
+                                                          setState(() {
+                                                            buttonPressed =
+                                                                false;
+                                                          });
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              AuthRoutes
+                                                                  .rebuyConversation,
+                                                              arguments: {
+                                                                'username':
+                                                                    sellerUsername
+                                                              });
+                                                        }))
                                                 ])),
                                           ))
                                     ])))
