@@ -15,8 +15,9 @@ RichText title = RichText(
       fontWeight: FontWeight.w500,
     )),
     children: const <TextSpan>[
-      TextSpan(text: 'Welcome To College'),
-      TextSpan(text: 'Hood', style: TextStyle(fontWeight: FontWeight.w700)),
+      TextSpan(
+          text: 'Welcome To Modyit',
+          style: TextStyle(fontWeight: FontWeight.w700)),
     ],
   ),
 );
@@ -47,36 +48,38 @@ class _PublicLanding extends State<PublicLanding> {
   @override
   Widget build(BuildContext context) {
     return Material(
+        color: Colors.black,
         child: Center(
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/publiclandingbackground.jpeg'),
-              fit: BoxFit.cover),
-        ),
-        child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            title,
-            const SizedBox(
-              height: 25.0,
+          child: DecoratedBox(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                      'assets/images/modyitpubliclandingbackground.png'),
+                  fit: BoxFit.cover),
             ),
-            button('Get Started', buttonPressed: buttonPressed,
-                onTap: () async {
-              setState(() {
-                buttonPressed = true;
-              });
-              await Future.delayed(const Duration(milliseconds: 500));
-              setState(() {
-                buttonPressed = false;
-              });
-              Navigator.pushNamed(context, PublicRoutes.login);
-            }),
-          ],
-        )),
-      ),
-    ));
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                title,
+                const SizedBox(
+                  height: 25.0,
+                ),
+                button('Get Started', buttonPressed: buttonPressed,
+                    onTap: () async {
+                  setState(() {
+                    buttonPressed = true;
+                  });
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  setState(() {
+                    buttonPressed = false;
+                  });
+                  Navigator.pushNamed(context, PublicRoutes.login);
+                }),
+              ],
+            )),
+          ),
+        ));
   }
 }

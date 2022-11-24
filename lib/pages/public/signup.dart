@@ -42,6 +42,10 @@ class _SignupState extends State<Signup> {
         prompts[index] = 'Field is empty!';
       }
     });
+    if (email.split('@')[1] != 'modyuniversity.ac.in') {
+      isError = true;
+      prompts[1] = 'Email does not belong to MU!';
+    }
     if (password.length < 3) {
       isError = true;
       prompts[2] = 'Passwords is too short!';
