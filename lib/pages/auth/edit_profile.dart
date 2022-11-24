@@ -115,80 +115,85 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Colors.black,
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-              child: Column(children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                profileTopBar(context, isEdit: true),
-                const SizedBox(
-                  height: 40,
-                ),
-                InkWell(
-                    onTap: () async {
-                      XFile? image = await imagePicker!.pickImage(
-                          source: ImageSource.gallery,
-                          imageQuality: 50,
-                          preferredCameraDevice: CameraDevice.rear);
-                      if (image != null) {
-                        setState(() {
-                          uploadedPicture = File(image.path);
-                        });
-                        updateProfilePicture();
-                      } else {}
-                    },
-                    child: Container(
-                        width: 175,
-                        height: 175,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(userProfilePicture),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(82.5)))),
-                const SizedBox(
-                  height: 15,
-                ),
-                input('Details', initialValue: userDetails, onChanged: (value) {
-                  setState(() {
-                    userDetails = value;
-                  });
-                }),
-                const SizedBox(
-                  height: 15,
-                ),
-                input('Email', initialValue: email, onChanged: (value) {
-                  setState(() {
-                    email = value;
-                  });
-                }),
-                const SizedBox(
-                  height: 15,
-                ),
-                input('Phone', initialValue: phone, onChanged: (value) {
-                  setState(() {
-                    phone = value;
-                  });
-                }),
-                const SizedBox(
-                  height: 20,
-                ),
-                authButton('Save',
-                    buttonPressed: buttonPressed,
-                    onTap: saveDetails,
-                    isPrimary: true),
-                const SizedBox(
-                  height: 15,
-                ),
-                authButton('Cancel', buttonPressed: buttonPressed, onTap: () {
-                  Navigator.pop(context);
-                })
-              ])),
-        ));
+    return Scaffold(
+        body: Material(
+            color: Colors.black,
+            child: SingleChildScrollView(
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 10.0),
+                      child: Column(children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        profileTopBar(context, isEdit: true),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        InkWell(
+                            onTap: () async {
+                              XFile? image = await imagePicker!.pickImage(
+                                  source: ImageSource.gallery,
+                                  imageQuality: 50,
+                                  preferredCameraDevice: CameraDevice.rear);
+                              if (image != null) {
+                                setState(() {
+                                  uploadedPicture = File(image.path);
+                                });
+                                updateProfilePicture();
+                              } else {}
+                            },
+                            child: Container(
+                                width: 175,
+                                height: 175,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(userProfilePicture),
+                                        fit: BoxFit.cover),
+                                    borderRadius:
+                                        BorderRadius.circular(82.5)))),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        input('Details', initialValue: userDetails,
+                            onChanged: (value) {
+                          setState(() {
+                            userDetails = value;
+                          });
+                        }),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        input('Email', initialValue: email, onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        }),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        input('Phone', initialValue: phone, onChanged: (value) {
+                          setState(() {
+                            phone = value;
+                          });
+                        }),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        authButton('Save',
+                            buttonPressed: buttonPressed,
+                            onTap: saveDetails,
+                            isPrimary: true),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        authButton('Cancel', buttonPressed: buttonPressed,
+                            onTap: () {
+                          Navigator.pop(context);
+                        })
+                      ]))),
+            )));
   }
 }

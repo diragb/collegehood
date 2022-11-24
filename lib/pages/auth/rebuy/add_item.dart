@@ -98,227 +98,230 @@ class _RebuyAddItemState extends State<RebuyAddItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Colors.black,
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: SingleChildScrollView(
+    return Scaffold(
+        body: Material(
+            color: Colors.black,
+            child: SingleChildScrollView(
+                child: SizedBox(
+              height: MediaQuery.of(context).size.height,
               child: Column(children: [
-            Container(
-                height: 150,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(0.0),
-                        bottomRight: Radius.circular(40.0),
-                        topLeft: Radius.circular(0.0),
-                        bottomLeft: Radius.circular(40.0))),
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 10.0),
-                    child: Column(children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      topBar(context, beDark: true),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Column(children: [
-                        const Icon(
-                          Icons.shopping_cart_rounded,
-                          color: Colors.black,
-                          size: 24.0,
-                          semanticLabel: 'Add Item',
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text('What do you want to post?',
-                            style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                              fontSize: 15,
+                Container(
+                    height: 150,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(0.0),
+                            bottomRight: Radius.circular(40.0),
+                            topLeft: Radius.circular(0.0),
+                            bottomLeft: Radius.circular(40.0))),
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 10.0),
+                        child: Column(children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          topBar(context, beDark: true),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Column(children: [
+                            const Icon(
+                              Icons.shopping_cart_rounded,
                               color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                            )))
-                      ])
-                    ]))),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-                width: double.infinity,
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 10.0),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Name of the item',
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ))),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          input('Name', onChanged: (value) {
-                            setState(() {
-                              name = value;
-                            });
-                          }),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          errorText(errorPrompts[0]),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          Text('Brief details of the item',
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ))),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          input('Details', onChanged: (value) {
-                            setState(() {
-                              details = value;
-                            });
-                          }),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          errorText(errorPrompts[1]),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          Text('Price',
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ))),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          input('Price', onChanged: (value) {
-                            setState(() {
-                              price = value;
-                            });
-                          }),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          errorText(errorPrompts[2]),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          Text('Description',
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ))),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          input('Description', onChanged: (value) {
-                            setState(() {
-                              description = value;
-                            });
-                          }, isMultiline: true),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          errorText(errorPrompts[3]),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          Text('Image',
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ))),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          InkWell(
-                              onTap: () async {
-                                XFile? image = await imagePicker!.pickImage(
-                                    source: ImageSource.gallery,
-                                    imageQuality: 50,
-                                    preferredCameraDevice: CameraDevice.rear);
-                                if (image != null) {
-                                  setState(() {
-                                    picturePath = image.path;
-                                    uploadedPicture = File(image.path);
-                                  });
-                                } else {
-                                  setState(() {
-                                    picturePath =
-                                        'An error occured while selecting the photo';
-                                  });
-                                }
-                              },
-                              child: Container(
-                                  height: 70,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15.0, horizontal: 15.0),
-                                      child: Container(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            picturePath == ''
-                                                ? 'Upload image(s) of item'
-                                                : processPicturePath(
-                                                    picturePath),
-                                            style: GoogleFonts.montserrat(
-                                                textStyle: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                            )),
-                                            overflow: TextOverflow.fade,
-                                            maxLines: 2,
-                                            softWrap: false,
-                                          ))))),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          errorText(errorPrompts[4]),
-                          const SizedBox(
-                            height: 7.5,
-                          ),
-                          authButton('Submit',
-                              isPrimary: true,
-                              buttonPressed: buttonPressed, onTap: () async {
-                            setState(() {
-                              buttonPressed = true;
-                            });
-                            await Future.delayed(
-                                const Duration(milliseconds: 500));
-                            setState(() {
-                              buttonPressed = false;
-                            });
-                            submitItem();
-                          })
+                              size: 24.0,
+                              semanticLabel: 'Add Item',
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text('What do you want to post?',
+                                style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                )))
+                          ])
                         ]))),
-          ])),
-        ));
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                    width: double.infinity,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 10.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Name of the item',
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ))),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              input('Name', onChanged: (value) {
+                                setState(() {
+                                  name = value;
+                                });
+                              }),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              errorText(errorPrompts[0]),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              Text('Brief details of the item',
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ))),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              input('Details', onChanged: (value) {
+                                setState(() {
+                                  details = value;
+                                });
+                              }),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              errorText(errorPrompts[1]),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              Text('Price',
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ))),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              input('Price', onChanged: (value) {
+                                setState(() {
+                                  price = value;
+                                });
+                              }),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              errorText(errorPrompts[2]),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              Text('Description',
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ))),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              input('Description', onChanged: (value) {
+                                setState(() {
+                                  description = value;
+                                });
+                              }, isMultiline: true),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              errorText(errorPrompts[3]),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              Text('Image',
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ))),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              InkWell(
+                                  onTap: () async {
+                                    XFile? image = await imagePicker!.pickImage(
+                                        source: ImageSource.gallery,
+                                        imageQuality: 50,
+                                        preferredCameraDevice:
+                                            CameraDevice.rear);
+                                    if (image != null) {
+                                      setState(() {
+                                        picturePath = image.path;
+                                        uploadedPicture = File(image.path);
+                                      });
+                                    } else {
+                                      setState(() {
+                                        picturePath =
+                                            'An error occured while selecting the photo';
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                      height: 70,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 15.0),
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                picturePath == ''
+                                                    ? 'Upload image(s) of item'
+                                                    : processPicturePath(
+                                                        picturePath),
+                                                style: GoogleFonts.montserrat(
+                                                    textStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                )),
+                                                overflow: TextOverflow.fade,
+                                                maxLines: 2,
+                                                softWrap: false,
+                                              ))))),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              errorText(errorPrompts[4]),
+                              const SizedBox(
+                                height: 7.5,
+                              ),
+                              authButton('Submit',
+                                  isPrimary: true, buttonPressed: buttonPressed,
+                                  onTap: () async {
+                                setState(() {
+                                  buttonPressed = true;
+                                });
+                                await Future.delayed(
+                                    const Duration(milliseconds: 500));
+                                setState(() {
+                                  buttonPressed = false;
+                                });
+                                submitItem();
+                              })
+                            ]))),
+              ]),
+            ))));
   }
 }

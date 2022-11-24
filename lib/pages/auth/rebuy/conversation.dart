@@ -114,80 +114,89 @@ class _RebuyConversationState extends State<RebuyConversation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        bottomNavigationBar: BottomAppBar(
-            color: Colors.black,
+        appBar: AppBar(
             elevation: 0,
-            child: Container(
-                height: 60,
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10.0),
-                      bottomRight: Radius.circular(0.0),
-                      topLeft: Radius.circular(10.0),
-                      bottomLeft: Radius.circular(0.0)),
-                ),
-                child: input('Send message..', onChanged: (value) {
-                  setState(() {
-                    messageValue = value;
-                  });
-                }, onFieldSubmitted: (message) async {
-                  handleSendMessage(message);
-                }))),
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.blue,
+            flexibleSpace: SafeArea(
+                child: Container(
+                    child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              child: Row(
+                children: [
+                  Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          image: DecorationImage(
+                              image: NetworkImage(theirPicture),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(30))),
+                  const SizedBox(width: 10),
+                  Text(to,
+                      style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      )))
+                ],
+              ),
+            )))),
         body: Material(
             color: Colors.black,
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Column(children: [
-                  const SizedBox(height: 30),
-                  Container(
-                      color: Colors.blue,
-                      width: MediaQuery.of(context).size.width,
-                      height: 80,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 20.0),
-                        child: Row(
-                          children: [
-                            Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    image: DecorationImage(
-                                        image: NetworkImage(theirPicture),
-                                        fit: BoxFit.cover),
-                                    borderRadius: BorderRadius.circular(40))),
-                            const SizedBox(width: 10),
-                            Text(to,
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                )))
-                          ],
-                        ),
-                      )),
-                  SingleChildScrollView(
-                      reverse: true,
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0),
-                          child: Column(children: [
-                            ...[
-                              ...messages.map((messageObj) => Column(
-                                    children: [
-                                      message(
-                                          isMe: messageObj['name'] == username,
-                                          message: messageObj['message']),
-                                      const SizedBox(height: 2)
-                                    ],
-                                  ))
-                            ],
-                          ])))
-                ]))));
+            child: SingleChildScrollView(
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              height: MediaQuery.of(context).size.height - 140,
+                              child: SingleChildScrollView(
+                                  reverse: true,
+                                  child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 10.0),
+                                      child: Column(children: [
+                                        ...[
+                                          ...messages.map((messageObj) =>
+                                              Column(
+                                                children: [
+                                                  message(
+                                                      isMe:
+                                                          messageObj['name'] ==
+                                                              username,
+                                                      message: messageObj[
+                                                          'message']),
+                                                  const SizedBox(height: 2)
+                                                ],
+                                              ))
+                                        ],
+                                      ])))),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                                height: 60,
+                                decoration: const BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(10.0),
+                                      bottomRight: Radius.circular(0.0),
+                                      topLeft: Radius.circular(10.0),
+                                      bottomLeft: Radius.circular(0.0)),
+                                ),
+                                child:
+                                    input('Send message..', onChanged: (value) {
+                                  setState(() {
+                                    messageValue = value;
+                                  });
+                                }, onFieldSubmitted: (message) async {
+                                  handleSendMessage(message);
+                                })),
+                          )
+                        ])))));
   }
 }

@@ -77,102 +77,110 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.black,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            pageTitle('Create Account', fontSize: 30),
-            const SizedBox(
-              height: 20.0,
-            ),
-            input('Username', onChanged: (value) {
-              setState(() {
-                username = value;
-              });
-            }),
-            const SizedBox(
-              height: 7.5,
-            ),
-            errorText(errorPrompts[0]),
-            const SizedBox(
-              height: 7.5,
-            ),
-            input('Email', onChanged: (value) {
-              setState(() {
-                email = value;
-              });
-            }),
-            const SizedBox(
-              height: 7.5,
-            ),
-            errorText(errorPrompts[1]),
-            const SizedBox(
-              height: 7.5,
-            ),
-            input('Password', onChanged: (value) {
-              setState(() {
-                password = value;
-              });
-            }, isObscure: true),
-            const SizedBox(
-              height: 7.5,
-            ),
-            errorText(errorPrompts[2]),
-            const SizedBox(
-              height: 7.5,
-            ),
-            input('Retype Password', onChanged: (value) {
-              setState(() {
-                repassword = value;
-              });
-            }, isObscure: true),
-            const SizedBox(
-              height: 7.5,
-            ),
-            errorText(errorPrompts[3]),
-            const SizedBox(
-              height: 7.5,
-            ),
-            authButton('Sign Up', buttonPressed: signupButtonPressed,
-                onTap: () async {
-              setState(() {
-                signupButtonPressed = true;
-              });
-              await Future.delayed(const Duration(milliseconds: 500));
-              setState(() {
-                signupButtonPressed = false;
-              });
-              handleSignup();
-            }, isPrimary: true),
-            const SizedBox(
-              height: 10.0,
-            ),
-            errorText(errorMessage),
-            const SizedBox(
-              height: 80.0,
-            ),
-            pageSubtitle('Already have an account?'),
-            const SizedBox(
-              height: 20.0,
-            ),
-            authButton('Login', buttonPressed: loginButtonPressed,
-                onTap: () async {
-              setState(() {
-                loginButtonPressed = true;
-              });
-              await Future.delayed(const Duration(milliseconds: 500));
-              setState(() {
-                loginButtonPressed = false;
-              });
-              Navigator.pushNamed(context, PublicRoutes.login);
-            }),
-          ],
-        ),
-      ),
+    return Scaffold(
+      body: Material(
+          color: Colors.black,
+          child: SingleChildScrollView(
+              child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 32.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        pageTitle('Create Account', fontSize: 30),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        input('Username', onChanged: (value) {
+                          setState(() {
+                            username = value;
+                          });
+                        }),
+                        const SizedBox(
+                          height: 7.5,
+                        ),
+                        errorText(errorPrompts[0]),
+                        const SizedBox(
+                          height: 7.5,
+                        ),
+                        input('Email', onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        }),
+                        const SizedBox(
+                          height: 7.5,
+                        ),
+                        errorText(errorPrompts[1]),
+                        const SizedBox(
+                          height: 7.5,
+                        ),
+                        input('Password', onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        }, isObscure: true),
+                        const SizedBox(
+                          height: 7.5,
+                        ),
+                        errorText(errorPrompts[2]),
+                        const SizedBox(
+                          height: 7.5,
+                        ),
+                        input('Retype Password', onChanged: (value) {
+                          setState(() {
+                            repassword = value;
+                          });
+                        }, isObscure: true),
+                        const SizedBox(
+                          height: 7.5,
+                        ),
+                        errorText(errorPrompts[3]),
+                        const SizedBox(
+                          height: 7.5,
+                        ),
+                        authButton('Sign Up',
+                            buttonPressed: signupButtonPressed,
+                            onTap: () async {
+                          setState(() {
+                            signupButtonPressed = true;
+                          });
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
+                          setState(() {
+                            signupButtonPressed = false;
+                          });
+                          handleSignup();
+                        }, isPrimary: true),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        errorText(errorMessage),
+                        const SizedBox(
+                          height: 80.0,
+                        ),
+                        pageSubtitle('Already have an account?'),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        authButton('Login', buttonPressed: loginButtonPressed,
+                            onTap: () async {
+                          setState(() {
+                            loginButtonPressed = true;
+                          });
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
+                          setState(() {
+                            loginButtonPressed = false;
+                          });
+                          Navigator.pushNamed(context, PublicRoutes.login);
+                        }),
+                      ],
+                    ),
+                  )))),
     );
   }
 }
