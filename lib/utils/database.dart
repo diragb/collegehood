@@ -241,8 +241,9 @@ Future<List<Map<String, dynamic>>> loadUsersChats(String username) async {
           await FirebaseDatabase.instance.ref().child('chats/$chatID').get();
       if (snapshot.exists) {
         var chatDetails = snapshot.value as dynamic;
-        var otherUsername =
-            chatDetails['p1'] == username ? username : chatDetails['p2'];
+        var otherUsername = chatDetails['p1'] == username
+            ? chatDetails['p2']
+            : chatDetails['p1'];
         var otherUserDetails = await getUserDetails(otherUsername);
         chats.add({
           ...chatDetails,
@@ -258,7 +259,8 @@ Future<List<Map<String, dynamic>>> loadUsersChats(String username) async {
   }
 }
 
-loadConversationFromChatID(String chatID) async {
+Future<List<Map<String, dynamic>>> loadConversationFromChatID(
+    String chatID) async {
   try {
     var snapshot = (await FirebaseDatabase.instance
             .ref()
@@ -266,36 +268,57 @@ loadConversationFromChatID(String chatID) async {
             .limitToLast(100)
             .get())
         .value;
-    return snapshot;
+    if (snapshot != null) {
+      var messages = (snapshot as Map<dynamic, dynamic>).entries.map((entry) {
+        return {
+          'name': entry.value['name'],
+          'message': entry.value['message'],
+          'timestamp': entry.value['timestamp']
+        };
+      }).toList();
+      return messages;
+    } else {
+      return [];
+    }
   } catch (e) {
     return [];
   }
 }
 
-loadConversationFromUsername(String username1, String username2) async {
-  var user1 = await getUserDetails(username1);
+Future<List<Map<String, dynamic>>> loadConversationFromUsername(
+    String me, String them) async {
+  var meUser = await getUserDetails(me);
   final chatID = UniqueKey().hashCode.toString();
-  if (user1['talksTo'][username2] != null) {
-    var chats = await loadConversationFromChatID(user1['talksTo'][username2]);
+  if (meUser['talksTo'][them] != null) {
+    var chats = await loadConversationFromChatID(meUser['talksTo'][them]);
     return chats;
   } else {
     // New conversation
-    await FirebaseFirestore.instance.collection('users').doc(username1).update({
-      'talksTo.$username2': chatID,
+    await FirebaseFirestore.instance.collection('users').doc(me).update({
+      'talksTo.$them': chatID,
       'chats': FieldValue.arrayUnion([chatID])
     });
-    await FirebaseFirestore.instance.collection('users').doc(username2).update({
-      'talksTo.$username1': chatID,
+    await FirebaseFirestore.instance.collection('users').doc(them).update({
+      'talksTo.$me': chatID,
       'chats': FieldValue.arrayUnion([chatID])
     });
+    String message = 'Hello! I was interested in the item you\'re selling!';
     await FirebaseDatabase.instance.ref().child('chats/$chatID').set({
-      'lastMessage': 'hello!',
-      'p1': username1,
-      'p2': username2,
-      'sentBy': username1,
-      'timestamp': Timestamp.now().toString()
+      'lastMessage': message,
+      'p1': me,
+      'p2': them,
+      'sentBy': me,
+      'timestamp': Timestamp.now().millisecondsSinceEpoch.toString()
     });
-    await sendMessage(username1, chatID, 'hello!');
+    await FirebaseDatabase.instance
+        .ref()
+        .child('conversations/$chatID')
+        .push()
+        .set({
+      'message': message,
+      'name': me,
+      'timestamp': Timestamp.now().millisecondsSinceEpoch.toString()
+    });
   }
   return [];
 }
@@ -312,9 +335,27 @@ sendMessage(String from, String to, String message) async {
     'name': from,
     'timestamp': Timestamp.now().millisecondsSinceEpoch.toString()
   });
+  await FirebaseDatabase.instance
+      .ref()
+      .child('conversations/$chatID')
+      .push()
+      .set({
+    'message': message,
+    'name': from,
+    'timestamp': Timestamp.now().millisecondsSinceEpoch.toString()
+  });
 }
 
 sendMessageCID(String from, String chatID, String message) async {
+  await FirebaseDatabase.instance
+      .ref()
+      .child('conversations/$chatID')
+      .push()
+      .set({
+    'message': message,
+    'name': from,
+    'timestamp': Timestamp.now().millisecondsSinceEpoch.toString()
+  });
   await FirebaseDatabase.instance
       .ref()
       .child('conversations/$chatID')

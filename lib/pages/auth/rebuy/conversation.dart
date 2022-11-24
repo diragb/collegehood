@@ -16,7 +16,7 @@ var message = ({
           alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
           child: Container(
             decoration: BoxDecoration(
-                color: isMe ? Colors.blue[600] : Colors.blue,
+                color: isMe ? Colors.blueGrey : Colors.blue,
                 borderRadius: BorderRadius.circular(40)),
             child: Padding(
                 padding:
@@ -44,6 +44,9 @@ class RebuyConversation extends StatefulWidget {
 class _RebuyConversationState extends State<RebuyConversation> {
   String username = '', messageValue = '', to = '', chattID = '';
   List messages = [];
+  String theirPicture =
+          'https://i.pinimg.com/originals/0a/53/c3/0a53c3bbe2f56a1ddac34ea04a26be98.jpg',
+      theirDescription = '';
 
   @override
   void initState() {
@@ -71,15 +74,19 @@ class _RebuyConversationState extends State<RebuyConversation> {
   }
 
   handleLoadConvoFromUsername(String username2) async {
-    List<dynamic> fetchedMessages =
+    var fetchedMessages =
         await loadConversationFromUsername(username, username2);
+    Map<String, dynamic> user = await getUserDetails(username2);
     setState(() {
       to = username2;
       messages = fetchedMessages.whereType<Map>().toList();
+      theirPicture = user['userProfilePicture'];
+      theirDescription = user['userDetails'];
     });
   }
 
   simpleLoadConvoFromChatID(String chatID) async {
+    // NOTE: Hopefully this is NEVER called.
     List<dynamic> fetchedMessages = await loadConversationFromChatID(chatID);
     setState(() {
       chattID = chatID;
@@ -88,9 +95,6 @@ class _RebuyConversationState extends State<RebuyConversation> {
   }
 
   handleSendMessage(String message) async {
-    setState(() {
-      messageValue = '';
-    });
     if (chattID != '') {
       sendMessageCID(username, chattID, message);
     } else {
@@ -110,6 +114,7 @@ class _RebuyConversationState extends State<RebuyConversation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         bottomNavigationBar: BottomAppBar(
             color: Colors.black,
             elevation: 0,
@@ -132,23 +137,57 @@ class _RebuyConversationState extends State<RebuyConversation> {
                 }))),
         body: Material(
             color: Colors.black,
-            child: SizedBox(
+            child: Container(
+                width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-                child: SingleChildScrollView(
-                    child: Padding(
+                child: Column(children: [
+                  const SizedBox(height: 30),
+                  Container(
+                      color: Colors.blue,
+                      width: MediaQuery.of(context).size.width,
+                      height: 80,
+                      child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 10.0),
-                        child: Column(children: [
-                          ...[
-                            ...messages.map((messageObj) => Column(
-                                  children: [
-                                    message(
-                                        isMe: messageObj['name'] == username,
-                                        message: messageObj['message']),
-                                    const SizedBox(height: 20)
-                                  ],
-                                ))
+                            vertical: 20.0, horizontal: 20.0),
+                        child: Row(
+                          children: [
+                            Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    image: DecorationImage(
+                                        image: NetworkImage(theirPicture),
+                                        fit: BoxFit.cover),
+                                    borderRadius: BorderRadius.circular(40))),
+                            const SizedBox(width: 10),
+                            Text(to,
+                                style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                )))
                           ],
-                        ]))))));
+                        ),
+                      )),
+                  SingleChildScrollView(
+                      reverse: true,
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          child: Column(children: [
+                            ...[
+                              ...messages.map((messageObj) => Column(
+                                    children: [
+                                      message(
+                                          isMe: messageObj['name'] == username,
+                                          message: messageObj['message']),
+                                      const SizedBox(height: 2)
+                                    ],
+                                  ))
+                            ],
+                          ])))
+                ]))));
   }
 }
