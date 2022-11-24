@@ -153,7 +153,6 @@ class _ProfileState extends State<Profile> {
                   setState(() {
                     listingsButtonPressed = false;
                   });
-                  signOutUser();
                   Navigator.pushNamed(context, AuthRoutes.rebuyMyListings);
                 }),
                 const SizedBox(
