@@ -151,37 +151,44 @@ class _AllEventsState extends State<AllEvents> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        bottomNavigationBar: eventsBottomBar(context),
-        body: Material(
-            color: Colors.black,
-            child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: SingleChildScrollView(
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 10.0),
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            topBar(context),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  pageTitle('Events'),
-                                ]),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            ...conditionalEvents(areEventsFetched),
-                          ],
-                        ))))));
+    return WillPopScope(
+        child: Scaffold(
+            bottomNavigationBar: eventsBottomBar(context),
+            body: Material(
+                color: Colors.black,
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: SingleChildScrollView(
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20.0, horizontal: 10.0),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                topBar(context),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      pageTitle('Events'),
+                                    ]),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ...conditionalEvents(areEventsFetched),
+                              ],
+                            )))))),
+        onWillPop: () async {
+          Navigator.pushNamedAndRemoveUntil(
+              context, AuthRoutes.landing, (route) => false);
+          return false;
+        });
   }
 }

@@ -362,78 +362,85 @@ class _RebuyExploreState extends State<RebuyExplore> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        bottomNavigationBar: rebuyBottomBar(context),
-        body: Material(
-            color: Colors.black,
-            child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: SingleChildScrollView(
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 10.0),
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            topBar(context),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  pageTitle('Explore'),
-                                  InkWell(
-                                      onTap: () {
-                                        Navigator.pushNamed(context,
-                                            AuthRoutes.rebuyLikedItems);
-                                      },
-                                      child: Icon(
-                                        Icons.favorite,
-                                        color: Colors.pink[300],
-                                        size: 24.0,
-                                        semanticLabel: 'Liked Items',
-                                      ))
-                                ]),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            input('Search for books, guitars, and more..'),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            SizedBox(
-                                height: 40,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  children: [
-                                    tag('Books',
-                                        currentKey: filterKey,
-                                        myKey: 'book',
-                                        onTapCallback: setFilterKey),
-                                    tag('Games',
-                                        currentKey: filterKey,
-                                        myKey: 'game',
-                                        onTapCallback: setFilterKey),
-                                    tag('Music',
-                                        currentKey: filterKey,
-                                        myKey: 'music',
-                                        onTapCallback: setFilterKey),
-                                    tag('Camera',
-                                        currentKey: filterKey,
-                                        myKey: 'camera',
-                                        onTapCallback: setFilterKey),
-                                  ],
-                                )),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            ...conditionalItems(areItemsFetched),
-                          ],
-                        ))))));
+    return WillPopScope(
+        child: Scaffold(
+            bottomNavigationBar: rebuyBottomBar(context),
+            body: Material(
+                color: Colors.black,
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: SingleChildScrollView(
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20.0, horizontal: 10.0),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                topBar(context),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      pageTitle('Explore'),
+                                      InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(context,
+                                                AuthRoutes.rebuyLikedItems);
+                                          },
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: Colors.pink[300],
+                                            size: 24.0,
+                                            semanticLabel: 'Liked Items',
+                                          ))
+                                    ]),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                input('Search for books, guitars, and more..'),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                    height: 40,
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      children: [
+                                        tag('Books',
+                                            currentKey: filterKey,
+                                            myKey: 'book',
+                                            onTapCallback: setFilterKey),
+                                        tag('Games',
+                                            currentKey: filterKey,
+                                            myKey: 'game',
+                                            onTapCallback: setFilterKey),
+                                        tag('Music',
+                                            currentKey: filterKey,
+                                            myKey: 'music',
+                                            onTapCallback: setFilterKey),
+                                        tag('Camera',
+                                            currentKey: filterKey,
+                                            myKey: 'camera',
+                                            onTapCallback: setFilterKey),
+                                      ],
+                                    )),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ...conditionalItems(areItemsFetched),
+                              ],
+                            )))))),
+        onWillPop: () async {
+          Navigator.pushNamedAndRemoveUntil(
+              context, AuthRoutes.landing, (route) => false);
+          return false;
+        });
   }
 }
