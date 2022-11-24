@@ -38,9 +38,9 @@ forms were working fine ✅
 19. MyListings is logging out user ✅
 
 20. In Chat:
-    1. Extra messages and some messages are duplicated
+    1. Extra messages and some messages are duplicated ✅
     2. Keyboard issue ✅
-    3. Messages are not in order
+    3. Messages are not in order ✅
 
 21. On back button on RebuyExplore it should go back to AuthLanding ✅
 
