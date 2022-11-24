@@ -44,8 +44,8 @@ forms were working fine ✅
 
 21. On back button on RebuyExplore it should go back to AuthLanding ✅
 
-22. User shouldn't be able to contact themselves
+22. User shouldn't be able to contact themselves ✅
 
 23. Item Pictures should allow camera as well
 
-24. Delete listing from my listings
+24. Delete listing from my listings ✅
