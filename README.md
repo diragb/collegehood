@@ -32,3 +32,20 @@ forms were working fine ✅
 16. Like list bug ✅
 
 17. Signup issue ✅
+
+18. Keyboard covering up typing space
+
+19. MyListings is logging out user
+
+20. In Chat:
+    1. Extra messages and some messages are duplicated
+    2. Keyboard issue
+    3. Messages are not in order
+
+21. On back button on RebuyExplore it should go back to AuthLanding
+
+22. User shouldn't be able to contact themselves
+
+23. Item Pictures should allow camera as well
+
+24. Delete listing from my listings
