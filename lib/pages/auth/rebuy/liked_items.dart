@@ -96,22 +96,24 @@ class _RebuyLikedItemsState extends State<RebuyLikedItems> {
     });
   }
 
-  conditionalItems(bool isFetched, bool isEmpty) {
+  Iterable<dynamic> conditionalItems(bool isFetched, bool isEmpty) {
     if (isFetched) {
       if (isEmpty) {
-        return Column(
-          children: [
-            const SizedBox(height: 20),
-            Text('No items to show',
-                style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                ))),
-            const SizedBox(height: 20)
-          ],
-        );
+        return [
+          Column(
+            children: [
+              const SizedBox(height: 20),
+              Text('No items to show',
+                  style: GoogleFonts.montserrat(
+                      textStyle: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ))),
+              const SizedBox(height: 20)
+            ],
+          )
+        ];
       } else {
         return items.map((item) => Column(
               children: [item, const SizedBox(height: 20)],
@@ -163,7 +165,7 @@ class _RebuyLikedItemsState extends State<RebuyLikedItems> {
                           const SizedBox(
                             height: 15,
                           ),
-                          conditionalItems(areItemsLoaded, noItems)
+                          ...conditionalItems(areItemsLoaded, noItems)
                         ]))))));
   }
 }
