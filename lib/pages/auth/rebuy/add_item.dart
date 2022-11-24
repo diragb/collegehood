@@ -244,7 +244,8 @@ class _RebuyAddItemState extends State<RebuyAddItem> {
                               const SizedBox(
                                 height: 7.5,
                               ),
-                              Text('Image',
+                              Text(
+                                  'Upload a picture of the item ${uploadedPicture != null ? '✅' : ''}',
                                   style: GoogleFonts.montserrat(
                                       textStyle: const TextStyle(
                                     fontSize: 16,
@@ -254,52 +255,121 @@ class _RebuyAddItemState extends State<RebuyAddItem> {
                               const SizedBox(
                                 height: 5,
                               ),
-                              InkWell(
-                                  onTap: () async {
-                                    XFile? image = await imagePicker!.pickImage(
-                                        source: ImageSource.gallery,
-                                        imageQuality: 50,
-                                        preferredCameraDevice:
-                                            CameraDevice.rear);
-                                    if (image != null) {
-                                      setState(() {
-                                        picturePath = image.path;
-                                        uploadedPicture = File(image.path);
-                                      });
-                                    } else {
-                                      setState(() {
-                                        picturePath =
-                                            'An error occured while selecting the photo';
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                      height: 70,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 15.0, horizontal: 15.0),
-                                          child: Container(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                picturePath == ''
-                                                    ? 'Upload image(s) of item'
-                                                    : processPicturePath(
-                                                        picturePath),
-                                                style: GoogleFonts.montserrat(
-                                                    textStyle: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600,
-                                                )),
-                                                overflow: TextOverflow.fade,
-                                                maxLines: 2,
-                                                softWrap: false,
-                                              ))))),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                        onTap: () async {
+                                          XFile? image = await imagePicker!
+                                              .pickImage(
+                                                  source: ImageSource.camera,
+                                                  imageQuality: 50,
+                                                  preferredCameraDevice:
+                                                      CameraDevice.rear);
+                                          if (image != null) {
+                                            setState(() {
+                                              picturePath = image.path;
+                                              uploadedPicture =
+                                                  File(image.path);
+                                            });
+                                          } else {
+                                            setState(() {
+                                              picturePath = '';
+                                            });
+                                          }
+                                        },
+                                        child: Container(
+                                            width: (MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    40) /
+                                                2,
+                                            height: 70,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 15.0,
+                                                        horizontal: 15.0),
+                                                child: Container(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      'Camera',
+                                                      style: GoogleFonts
+                                                          .montserrat(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      )),
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      maxLines: 2,
+                                                      softWrap: false,
+                                                    ))))),
+                                    const SizedBox(width: 10),
+                                    InkWell(
+                                        onTap: () async {
+                                          XFile? image = await imagePicker!
+                                              .pickImage(
+                                                  source: ImageSource.gallery,
+                                                  imageQuality: 50,
+                                                  preferredCameraDevice:
+                                                      CameraDevice.rear);
+                                          if (image != null) {
+                                            setState(() {
+                                              picturePath = image.path;
+                                              uploadedPicture =
+                                                  File(image.path);
+                                            });
+                                          } else {
+                                            setState(() {
+                                              picturePath = '';
+                                            });
+                                          }
+                                        },
+                                        child: Container(
+                                            width: (MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    40) /
+                                                2,
+                                            height: 70,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 15.0,
+                                                        horizontal: 15.0),
+                                                child: Container(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      'Gallery',
+                                                      style: GoogleFonts
+                                                          .montserrat(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      )),
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      maxLines: 2,
+                                                      softWrap: false,
+                                                    )))))
+                                  ]),
                               const SizedBox(
                                 height: 7.5,
                               ),
